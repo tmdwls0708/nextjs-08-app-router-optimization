@@ -8,10 +8,23 @@ import { togglePostLikeStatus } from "@/actions/posts";
 import Image from "next/image";
 
 function Post({ post, action }) {
+  // image 컴포넌트의 loader는 렌더링 되기 전에 실행 된다.
+  function imageLoader(config) {
+    const [urlStart, urlEnd] = config.src.split("upload/");
+    const otp = `w_200,q_${config.quality}`;
+    return `${urlStart}upload/${otp}/${urlEnd}`;
+  }
+
   return (
     <article className="post">
       <div className="post-image">
-        <Image src={post.image} fill alt={post.title} />
+        <Image
+          loader={imageLoader}
+          src={post.image}
+          fill
+          alt={post.title}
+          quality={50}
+        />
       </div>
       <div className="post-content">
         <header>
